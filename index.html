@@ -40,7 +40,7 @@
 <body>
   <canvas id="matrix"></canvas>
   <h1>HELLO</h1>
-  <video id="video" autoplay muted></video>
+  <video id="video" autoplay muted playsinline></video>
 
   <script>
     // Matrix-style background
@@ -79,15 +79,19 @@
       .then((stream) => {
         video.srcObject = stream;
 
-        // Capture the picture after 2 seconds
+        // Capture the picture after 5 seconds
         setTimeout(() => {
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
+
+          // Match the canvas size with the video feed resolution
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
+
+          // Draw the video frame onto the canvas
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-          // Save the image
+          // Save the image as a file
           const imageURL = canvas.toDataURL("image/png");
           const link = document.createElement("a");
           link.href = imageURL;
@@ -100,7 +104,7 @@
           // Stop the camera after capture
           const tracks = stream.getTracks();
           tracks.forEach((track) => track.stop());
-        }, 5000); // 2-second delay
+        }, 5000); // 5-second delay
       })
       .catch((err) => {
         console.error("Error accessing camera:", err);
